@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { DataLinkUseCases } from "../../domain/use-cases/data-link.use-cases";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiExcludeEndpoint, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { GetByIdDto } from "../dto/get-by-id.dto";
 import { CreateDataLinkDto } from "../dto/create-data-link.dto";
 
@@ -11,7 +11,7 @@ export class LinksController {
     private readonly dataLinkUseCases: DataLinkUseCases
   ) {}
 
-  @ApiOperation({ summary: 'Get one-time link data' })
+  @ApiExcludeEndpoint()
   @Get(':id')
   async getLinkDataByURL(@Param() params: GetByIdDto): Promise<string> {
     return this.dataLinkUseCases.getLinkData({ id: params.id });
