@@ -2,9 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
+import { IServerConfig } from "./config/interfaces/server-config.interface";
+import { ConfigService } from "@nestjs/config";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+  const serverConfig = configService.get<IServerConfig>('server');
+  const PORT = serverConfig.port;
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -21,6 +26,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/api-docs', app, document);
 
-  await app.listen(3000);
+  await app.listen(PORT);
+  console.log(`Please, check Swagger for API exploring: http://localhost:${PORT}/api-docs`);
 }
 bootstrap();
