@@ -30,6 +30,7 @@
 
 ```bash
 $ npm install
+$ npm run build
 ```
 
 ## Running the app
